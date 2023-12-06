@@ -1,5 +1,5 @@
 function fantasia_DFA
-folderPath = 'DATASET';
+folderPath = 'ecg_dataset';
 
 % Get a list of all text files in the folder
 fileList = dir(fullfile(folderPath, '*.txt'));
