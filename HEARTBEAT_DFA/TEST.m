@@ -1,3 +1,4 @@
 DATA=load("Y1.txt");
-DFA_call(DATA)
+[d,a]=DFA_call(DATA);
+disp("d="+d);disp("a="+a);
 DFA_call_unfilt(DATA)
