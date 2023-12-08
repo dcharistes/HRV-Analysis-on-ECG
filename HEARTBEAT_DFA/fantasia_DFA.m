@@ -16,7 +16,7 @@ end
 
 for k = 1:numel(fileList)
     figure(k)
-     DFA_call(DATA{k});
+    DFA_call(DATA{k});grid on;
 end
 
 end
