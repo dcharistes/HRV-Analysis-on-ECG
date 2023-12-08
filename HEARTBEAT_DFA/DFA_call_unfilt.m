@@ -15,4 +15,4 @@ ylabel('F(n)')
 A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
 Alpha1=A(1);
 D=3-A(1);
-return
+return;
