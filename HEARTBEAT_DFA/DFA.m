@@ -9,7 +9,6 @@ function output1=DFA(DATA,win_length,order)
        fitcoef=zeros(n,order+1);
             mean1=mean(DATA(1:N1));
        for i=1:N1
-                
                 y(i)=sum(DATA(1:i)-mean1);
        end
             y=y';
