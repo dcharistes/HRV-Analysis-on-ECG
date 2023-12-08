@@ -26,7 +26,7 @@ plot(t1,ecg_smooth),ylabel('amplitude'),xlabel('time')
 title('Filtered ECG signal')
 
 hh=ecg_smooth;
- j=[];          
+ j=[];           
 time=0;          
 th=0.45*max(hh);  
  
