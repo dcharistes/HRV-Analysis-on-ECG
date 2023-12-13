@@ -20,7 +20,6 @@ function output1=DFA(DATA,win_length,order)
                 Yn(((j-1)*win_length+1):j*win_length)=polyval(fitcoef(j,:),1:win_length);
             end
             
-            sum1=sum((y'-Yn).^2)/N1;
-            sum1=sqrt(sum1);
+            sum1=sqrt(sum((y'-Yn).^2)/N1);
             output1=sum1;
           
