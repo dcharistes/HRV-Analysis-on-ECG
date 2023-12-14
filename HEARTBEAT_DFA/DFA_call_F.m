@@ -7,7 +7,7 @@ function [D,Alpha1]=DFA_call(DATA)
 ecg=DATA;
 f_s=250;
 N=length(ecg);
-t=(0:N-1)/f_s; %time period(total sample/Fs )
+t=(0:N-1)/f_s; %time period(total sample/Fs)
 
 subplot(221)
 plot(t,ecg,'r'); title('Raw ECG Data plotting ')             
