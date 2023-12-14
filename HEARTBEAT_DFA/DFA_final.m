@@ -72,7 +72,7 @@ end
 %Plots  
 n=n';
 subplot(224)
-plot(log(n),log(F_n),'-s','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
+plot(log(n),log(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
 title('DFA Interpretation')  
 xlabel('n')
 ylabel('F(n)')
