@@ -1,4 +1,4 @@
-function [D,Alpha1]=DFA_call_unfilt(DATA)               
+function [D,Alpha1]=DFA_call_unfiltered(DATA)               
 
 n=100:100:1000;
 N1=length(n);
