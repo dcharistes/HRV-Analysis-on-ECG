@@ -1,6 +1,9 @@
 %%TEST
+function DFA_call_F
 DATA=load("Y1.txt");
 [d,a]=DFA_call(DATA);
+disp("d="+d);disp("a="+a);
+end
 
 %%DFA_call
 function [D,Alpha1]=DFA_call(DATA)
