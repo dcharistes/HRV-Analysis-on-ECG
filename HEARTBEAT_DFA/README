@@ -12,4 +12,4 @@ fantasia_DFA: Here we load a folder containing all the signals(.txt files) we ha
 
 TEST.m- Use it if you want to test the functions DFA_call and DFA 
 
-text files O1.txt and Y1.txt are used for testing
+text files Y1.txt used for testing the algorithm's integrity
