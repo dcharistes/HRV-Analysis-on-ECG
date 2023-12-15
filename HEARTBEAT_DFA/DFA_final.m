@@ -1,6 +1,6 @@
 %%%DFA_final
 function DFA_final
-DATA=load("Y1.txt");
+DATA=load("O1.txt");
 [d,a]=DFA_call_F(DATA);
 disp("d="+d);disp("a="+a);
 end
@@ -86,9 +86,9 @@ end
 %%%DFA algorithm
 function [out1,out2,out3,out4]=DFA(DATA,win_length,order)
       
-N=length(DATA);  %7168 
-n=floor(N/win_length); %71.00
-N1=n*win_length; %7100
+N=length(DATA);  %7168 1st it
+n=floor(N/win_length); %71.00 1st it
+N1=n*win_length; %7100 1st it
 y=zeros(N1,1);
 Yn=zeros(N1,1);
 
@@ -101,17 +101,24 @@ for i=1:N1
 end
 
 y=y';
+x=1:win_length; 
 
+%The number of windows in each iteration(See lines 62-65,66 on &&Calling DFA) is n. 
+%For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100
 for j=1:n
-    fitcoef(j,:)=polyfit(1:win_length,y(((j-1)*win_length+1):j*win_length),order);
+    w(j,:)=((j-1)*win_length+1):j*win_length;
 end
 
 for j=1:n
-    Yn(((j-1)*win_length+1):j*win_length)=polyval(fitcoef(j,:),1:win_length);  
+    fitcoef(j,:)=polyfit(x,y(w(j,:)),order);
+end
+p(1:n,order:order+1)=fitcoef(1:n,:);
+
+for j=1:n
+    Yn(w(j,:))=polyval(p(j,:),x);  
 end
 
-sum1=sum((y'-Yn).^2)/N1;
-sum1=sqrt(sum1);
+sum1=sqrt(sum((y'-Yn).^2)/N1);
 
 out1=sum1; 
 out2=y;
