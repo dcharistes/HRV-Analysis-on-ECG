@@ -43,7 +43,14 @@ j(j==0)=[];
 time(time==0)=[];     
 m=(time)';              
 k=length(m);  
-
+% subplot(223)
+% plot(t,hh);            
+% hold on;                
+% plot(time,j,'*r'); title('PEAK POINTS DETECTED IN ECG SIGNAL')    
+% xlabel('time')
+% ylabel('amplitude')
+% hold off   
+%%
 %%calling DFA
 n=100:100:1000;
 N1=length(n);
