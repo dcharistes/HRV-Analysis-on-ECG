@@ -90,7 +90,7 @@ function [out1,out2,out3,out4]=DFA(DATA,win_length,order)
 %For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100 
 
 N=length(DATA);  %7168 1st it
-n=floor(N/win_length); %71.00 1st it
+n=floor(N/win_length); %71.00 1st it - n is the number of windows
 N1=n*win_length; %7100 1st it
 y=zeros(N1,1);
 Yn=zeros(N1,1);
