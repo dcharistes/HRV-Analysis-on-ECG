@@ -109,10 +109,9 @@ w=(bsxfun(@plus,x',(0:(n-1))*win_length))'; %element-wise addition between two m
 for j=1:n
     fitcoef(j,:)=polyfit(x,y(w(j,:)),order);
 end
-p(1:n,order:order+1)=fitcoef(1:n,:);
 
 for j=1:n
-    Yn(w(j,:))=polyval(p(j,:),x);  
+    Yn(w(j,:))=polyval(fitcoef(j,:),x);  
 end
 
 sum1=sqrt(sum((y'-Yn).^2)/N1);
