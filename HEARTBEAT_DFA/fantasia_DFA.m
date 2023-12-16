@@ -21,9 +21,10 @@ end
 
 end
 
-%%DFA_call_F 
+%%%DFA_call_F 
 function [D,Alpha1]=DFA_call_fant(DATA)
 
+%%Pre-processing
 ecg=DATA;
 f_s=250;
 N=length(ecg);
@@ -64,8 +65,9 @@ end
 j(j==0)=[];              
 time(time==0)=[];     
 m=(time)';              
-k=length(m);                
-
+k=length(m); 
+%%
+%%Calling DFA
 n=100:100:1000;
 N1=length(n);
 F_n=zeros(N1,1);
@@ -76,10 +78,10 @@ for i=1:N1
     plot(1:N2,y,"b");hold on;
     plot(1:N2,Yn,"r");hold off;
 end
-   
+%Plots  
 n=n';
 subplot(224)
-plot(log(n),log(F_n),'-s','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
+plot(log(n),log(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
 title('DFA Interpretation')  
 xlabel('n')
 ylabel('F(n)')
@@ -87,36 +89,41 @@ A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
 Alpha1=A(1);
 D=3-A(1);
 return;
+
 end
 
+%%%DFA algorithm
 function [out1,out2,out3,out4]=DFA(DATA,win_length,order)
-      
-N=length(DATA);  %7168 
-n=floor(N/win_length); %71.00
-N1=n*win_length; %7100
+
+%note:The number of windows in each iteration(See lines 62-65,66 on &&Calling DFA) is n. 
+%For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100 
+
+N=length(DATA);  %7168 1st it
+n=floor(N/win_length); %71.00 1st it
+N1=n*win_length; %7100 1st it
 y=zeros(N1,1);
 Yn=zeros(N1,1);
 
 fitcoef=zeros(n,order+1);
 
 mean1=mean(DATA(1:N1));
-%plot(1:N1,mean1);
+
 for i=1:N1
     y(i)=sum(DATA(1:i)-mean1);
 end
 
 y=y';
-
+x=1:win_length; 
+w=(bsxfun(@plus,x',(0:(n-1))*win_length))'; %element-wise addition between two matrices
 for j=1:n
-    fitcoef(j,:)=polyfit(1:win_length,y(((j-1)*win_length+1):j*win_length),order);
+    fitcoef(j,:)=polyfit(x,y(w(j,:)),order);
 end
 
 for j=1:n
-    Yn(((j-1)*win_length+1):j*win_length)=polyval(fitcoef(j,:),1:win_length);  
+    Yn(w(j,:))=polyval(fitcoef(j,:),x);  
 end
 
-sum1=sum((y'-Yn).^2)/N1;
-sum1=sqrt(sum1);
+sum1=sqrt(sum((y'-Yn).^2)/N1);
 
 out1=sum1; 
 out2=y;
