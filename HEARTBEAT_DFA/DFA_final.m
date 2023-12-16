@@ -85,7 +85,10 @@ end
 
 %%%DFA algorithm
 function [out1,out2,out3,out4]=DFA(DATA,win_length,order)
-      
+
+%note:The number of windows in each iteration(See lines 62-65,66 on &&Calling DFA) is n. 
+%For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100 
+
 N=length(DATA);  %7168 1st it
 n=floor(N/win_length); %71.00 1st it
 N1=n*win_length; %7100 1st it
@@ -95,20 +98,14 @@ Yn=zeros(N1,1);
 fitcoef=zeros(n,order+1);
 
 mean1=mean(DATA(1:N1));
-%plot(1:N1,mean1);
+
 for i=1:N1
     y(i)=sum(DATA(1:i)-mean1);
 end
 
 y=y';
 x=1:win_length; 
-
-%The number of windows in each iteration(See lines 62-65,66 on &&Calling DFA) is n. 
-%For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100
-for j=1:n
-    w(j,:)=((j-1)*win_length+1):j*win_length;
-end
-
+w=(bsxfun(@plus,x',(0:(n-1))*win_length))'; %element-wise addition between two matrices
 for j=1:n
     fitcoef(j,:)=polyfit(x,y(w(j,:)),order);
 end
