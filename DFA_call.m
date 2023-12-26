@@ -1,7 +1,7 @@
 %%%DFA_call & pre-process 
 function [D,Alpha1]=DFA_call(DATA)
 
-%%Pre-processing
+%%Pre-processing 
 ecg=DATA;
 f_s=250;
 N=length(ecg);
