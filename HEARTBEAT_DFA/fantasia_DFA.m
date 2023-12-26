@@ -1,5 +1,6 @@
 %%Experiment segment
 function fantasia_DFA
+clc;
 folderPath = 'ecg_dataset';
 
 % Get a list of all text files in the folder
@@ -16,7 +17,9 @@ end
 
 for k = 1:numel(fileList)
     figure(k)
-    DFA_call_fant(DATA{k});grid on;
+    [d,a]=DFA_call_fant(DATA{k});grid on;
+    disp("ECG No.: "+k)
+    disp("d="+d);disp("alpha="+a);
 end
 
 end
@@ -31,7 +34,7 @@ N=length(ecg);
 t=(0:N-1)/f_s; %time period(total sample/Fs)
 
 subplot(221)
-plot(t,ecg,'r'); title('Raw ECG Data plotting ')             
+plot(t,ecg,'r'),grid on,title('Raw ECG Data plotting '),grid on;             
 xlabel('time')
 ylabel('amplitude')
 
@@ -40,7 +43,7 @@ bw=w;
 [num,den]=iirnotch(w,bw); 
 ecg_notch=filter(num,den,ecg);
 [e,f]=wavedec(ecg_notch,20,'db6');
-g=wrcoef('a',e,f,'db6',16); 
+g=wrcoef('d',e,f,'db6',16); 
 
 ecg_wave=ecg_notch-g; 
 ecg_smooth=smooth(ecg_wave); 
@@ -48,7 +51,7 @@ N1=length(ecg_smooth);
 t1=(0:N1-1)/f_s;
 
 subplot(222)
-plot(t1,ecg_smooth),ylabel('amplitude'),xlabel('time')
+plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('time')
 title('Filtered ECG signal')
 
 hh=ecg_smooth;
@@ -73,12 +76,13 @@ N1=length(n);
 F_n=zeros(N1,1);
 for i=1:N1
     [F_n(i),y,Yn,N2]=DFA(ecg_smooth,n(i),1);
-
+%Plots
     subplot(223)
-    plot(1:N2,y,"b");hold on;
-    plot(1:N2,Yn,"r");hold off;
-end
-%Plots  
+    plot(1:N2,y,"b"),grid on,hold on;
+    plot(1:N2,Yn,"r"),grid on;
+    xlabel('n');ylabel('f')
+    title('y(n) and Yn(n)');legend('y','Yn','Location','northwest');hold off;
+end 
 n=n';
 subplot(224)
 plot(log(n),log(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
@@ -87,6 +91,8 @@ xlabel('n')
 ylabel('F(n)')
 A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
 Alpha1=A(1);
+%A_c=polyval(A,log(n(1:end)));
+%plot(log(n),A_c)
 D=3-A(1);
 return;
 
@@ -99,7 +105,7 @@ function [out1,out2,out3,out4]=DFA(DATA,win_length,order)
 %For the 1st it. n=71. So: w1=1:100 w2=101:200...w71=7001:7100 
 
 N=length(DATA);  %7168 1st it
-n=floor(N/win_length); %71.00 1st it
+n=floor(N/win_length); %71.00 1st it - n is the number of windows
 N1=n*win_length; %7100 1st it
 y=zeros(N1,1);
 Yn=zeros(N1,1);
@@ -114,18 +120,16 @@ end
 
 y=y';
 x=1:win_length; 
-w=(bsxfun(@plus,x',(0:(n-1))*win_length))'; %element-wise addition between two matrices
+w=(bsxfun(@plus,x',(0:(n-1))*win_length))'; %bsxfun() element-wise addition between two matrices 
+                                            %for j=1:n w(j,:)=((j-1)*win_length+1):j*win_length; end
 for j=1:n
     fitcoef(j,:)=polyfit(x,y(w(j,:)),order);
-end
-
-for j=1:n
-    Yn(w(j,:))=polyval(fitcoef(j,:),x);  
+    Yn(w(j,:))=polyval(fitcoef(j,:),x);
 end
 
 sum1=sqrt(sum((y'-Yn).^2)/N1);
 
-out1=sum1; 
+out1=sum1;
 out2=y;
 out3=Yn;
 out4=N1;
