@@ -1,5 +1,5 @@
 desc.: 
-Unmerged functions :
+Unmerged functions:
 DFA.m - Just the code of the DFA algorithm to analyze a signal (ECG signal). 
 DFA_call.m - The argument of the function loads a signal. 
 First step->Pre-processing
