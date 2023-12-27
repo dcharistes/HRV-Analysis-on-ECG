@@ -19,7 +19,7 @@ for k = 1:numel(fileList)
     figure(k)
     [d,a]=DFA_call_fant(DATA{k});grid on;
     disp("ECG No.: "+k)
-    disp("d="+d);disp("alpha="+a);
+    disp("dim="+d);disp("alpha="+a);
 end
 
 end
