@@ -14,7 +14,7 @@ function [D,Alpha1]=DFA_call_F(DATA)
 ecg=DATA;
 f_s=250;
 N=length(ecg);
-t=(0:N-1)/f_s; %time period(total sample/Fs)
+t=0:N-1; %time period(total sample/Fs)
 figure (1)
 subplot(221)
 plot(t,ecg,'r');title('Raw ECG Data plotting ');grid on;          
@@ -31,7 +31,7 @@ g=wrcoef('d',e,f,'db6',16);
 ecg_wave=ecg_notch-g; 
 ecg_smooth=smooth(ecg_wave); 
 N1=length(ecg_smooth);
-t1=(0:N1-1)/f_s;
+t1=0:N1-1;
 
 subplot(222)
 plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('time')
