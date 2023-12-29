@@ -62,14 +62,14 @@ k=length(m);
 %%
 %%Calling DFA
 n=100:100:1000;
-N1=length(n);
-F_n=zeros(N1,1);
-for i=1:N1
-    [F_n(i),y,Yn,N2]=DFA(ecg_smooth,n(i),1);
+N=length(n);
+F_n=zeros(N,1);
+for i=1:N
+    [F_n(i),y,Yn,N1]=DFA(ecg_smooth,n(i),1);
 %Plots
     subplot(223)
-    plot(1:N2,y,"b");hold on;grid on;
-    plot(1:N2,Yn,"r");grid on;
+    plot(1:N1,y,"b");hold on;grid on;
+    plot(1:N1,Yn,"r");grid on;
     xlabel('n');ylabel('f')
     title('y(n) and Yn(n)');legend('y','Yn','Location','northwest');hold off;
 end  
