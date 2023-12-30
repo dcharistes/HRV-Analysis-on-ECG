@@ -16,7 +16,7 @@ for k = 1:numel(fileList)
 end
 
 for k = 1:numel(fileList)
-    figure(k)
+    
     [d,a]=DFA_call_fant(DATA{k});grid on;
     disp("ECG No.: "+k)
     disp("dim="+d);disp("alpha="+a);
@@ -32,10 +32,10 @@ ecg=DATA;
 f_s=250;
 N=length(ecg);
 t=0:N-1; %time period(total sample/Fs)
-
+figure
 subplot(221)
-plot(t,ecg,'r'),grid on,title('Raw ECG Data plotting '),grid on;             
-xlabel('time')
+plot(t,ecg,'r'),grid on,title('Raw Interbeat interval ECG Signal '),xlim([0 N+200])            
+xlabel('Beat number')
 ylabel('amplitude')
 
 w=50/(250/2);
@@ -51,8 +51,8 @@ N1=length(ecg_smooth);
 t1=0:N1-1;
 
 subplot(222)
-plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('time')
-title('Filtered ECG signal')
+plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('Beat number')
+title('Filtered interbeat interval ECG signal'),xlim([0 N+200])
 
 hh=ecg_smooth;
 j=[];           
@@ -72,14 +72,14 @@ k=length(m);
 %%
 %%Calling DFA
 n=100:100:1000;
-N1=length(n);
-F_n=zeros(N1,1);
-for i=1:N1
-    [F_n(i),y,Yn,N2]=DFA(ecg_smooth,n(i),1);
+N=length(n);
+subplot(223)
+F_n=zeros(N,1);
+for i=1:N
+    [F_n(i),y,Yn,N1]=DFA(ecg_smooth,n(i),1);
 %Plots
-    subplot(223)
-    plot(1:N2,y,"b"),grid on,hold on;
-    plot(1:N2,Yn,"r"),grid on;
+    plot(1:N1,y,"b"),grid on,xlim([0 N1+100]),hold on;
+    plot(1:N1,Yn,"r"),grid on;
     xlabel('n');ylabel('f')
     title('y(n) and Yn(n)');legend('y','Yn','Location','northwest');hold off;
 end 

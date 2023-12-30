@@ -17,13 +17,13 @@ N=length(ecg);
 t=0:N-1; %time period(total sample/Fs)
 figure (1)
 subplot(221)
-plot(t,ecg,'r');title('Raw ECG Data plotting ');grid on;          
-xlabel('time')
+plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '),xlim([0 N+200]),grid on;          
+xlabel('Beat number')
 ylabel('amplitude')
 
-w=50/(250/2);
+w=50/(250/2); %50Hz is the frequency of the powerlines we are trying to remove here
 bw=w;
-[num,den]=iirnotch(w,bw); 
+[num,den]=iirnotch(w,bw);
 ecg_notch=filter(num,den,ecg);
 [e,f]=wavedec(ecg_notch,20,'db6');
 g=wrcoef('d',e,f,'db6',16);
@@ -34,8 +34,8 @@ N1=length(ecg_smooth);
 t1=0:N1-1;
 
 subplot(222)
-plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('time')
-title('Filtered ECG signal')
+plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('Beat number')
+title('Filtered interbeat interval ECG signal'),xlim([0 N+200]);
 
 hh=ecg_smooth;
 j=[];           
@@ -52,14 +52,7 @@ j(j==0)=[];
 time(time==0)=[];     
 m=(time)';              
 k=length(m);
-% subplot(223)
-% plot(t,hh);            
-% hold on;                
-% plot(time,j,'*r'); title('PEAK POINTS DETECTED IN ECG SIGNAL')    
-% xlabel('time')
-% ylabel('amplitude')
-% hold off   
-%%
+
 %%Calling DFA
 n=100:100:1000;
 N=length(n);
@@ -68,10 +61,10 @@ for i=1:N
     [F_n(i),y,Yn,N1]=DFA(ecg_smooth,n(i),1);
 %Plots
     subplot(223)
-    plot(1:N1,y,"b");hold on;grid on;
-    plot(1:N1,Yn,"r");grid on;
-    xlabel('n');ylabel('f')
-    title('y(n) and Yn(n)');legend('y','Yn','Location','northwest');hold off;
+    plot(1:N1,y,"b"),hold on,grid on, xlim([0 N1+100]);
+    plot(1:N1,Yn,"r"),grid on;
+    xlabel('n'),ylabel('f')
+    title('y(n) and Yn(n)'),legend('y','Yn','Location','northwest'),hold off;
 end  
 n=n';
 subplot(224)
@@ -80,7 +73,7 @@ title('DFA Interpretation')
 xlabel('n')
 ylabel('F(n)')
 A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
-Alpha1=A(1);
+Alpha1=A(1); %slope
 %A_c=polyval(A,log(n(1:end)));
 %plot(log(n),A_c)
 D=3-A(1);
@@ -103,6 +96,7 @@ Yn=zeros(N1,1);
 fitcoef=zeros(n,order+1);
 
 mean1=mean(DATA(1:N1));
+
 
 for i=1:N1
     y(i)=sum(DATA(1:i)-mean1);
