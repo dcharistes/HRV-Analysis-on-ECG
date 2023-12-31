@@ -1,14 +1,17 @@
 %%%DFA_final
 function DFA_final
-
+clc;
 DATA=load("O1.txt");
 disp("ECG Analysis of one signal")
-[d,a]=DFA_call_F(DATA);
-disp("dim="+d);disp("alpha="+a);
+[d,a,slope,N]=DFA_call_F(DATA);
+disp("dimension= "+d);disp("average slope of the whole graph is: "+a);
+for j=1:N-1 
+    disp("slope("+j+"): "+slope(j))
+end
 end
 
 %%%DFA_call_F 
-function [D,Alpha1]=DFA_call_F(DATA)
+function [D,Alpha1,slope,N]=DFA_call_F(DATA)
 
 %%Pre-processing
 ecg=DATA;
@@ -57,6 +60,7 @@ k=length(m);
 n=100:100:1000;
 N=length(n);
 F_n=zeros(N,1);
+slope=zeros(1,N-1);
 for i=1:N
     [F_n(i),y,Yn,N1]=DFA(ecg_smooth,n(i),1);
 %Plots
@@ -72,8 +76,11 @@ plot(log(n),log(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceCol
 title('DFA Interpretation')  
 xlabel('n')
 ylabel('F(n)')
+for j=1:N-1
+slope(j)=(log(F_n(j+1))-log(F_n(j)))/(log(n(j+1))-log(n(j)));
+end
 A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
-Alpha1=A(1); %slope
+Alpha1=A(1); %slope for the whole graph
 %A_c=polyval(A,log(n(1:end)));
 %plot(log(n),A_c)
 D=3-A(1);
