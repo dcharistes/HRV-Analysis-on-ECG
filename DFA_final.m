@@ -17,10 +17,10 @@ function [D,Alpha1,slope,N]=DFA_call_F(DATA)
 ecg=DATA;
 f_s=250;
 f_pl=50;  %powerlines frequency
-N=length(ecg);
-t=0:N-1; %time period(total sample/Fs)
+N_ecg=length(ecg);
+t=0:N_ecg-1; %time period(total sample/Fs)
 subplot(221)
-plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '),grid on,xlim([0 N+200])        
+plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '),grid on,xlim([0 N_ecg+200])        
 xlabel('Beat number')
 ylabel('amplitude')
 
@@ -38,23 +38,7 @@ t1=0:N1-1;
 
 subplot(222)
 plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('Beat number')
-title('Filtered interbeat interval ECG signal'),xlim([0 N+200])
-
-% hh=ecg_smooth;
-% j=[];           
-% time=0;          
-% th=0.45*max(hh);  
-% 
-% for i=2:N1-1  
-%     if((hh(i)>hh(i+1))&&(hh(i)>hh(i-1))&&(hh(i)>th))  
-%         j(i)=hh(i);                                   
-%         time(i)=(i-1)/250;                           
-%     end
-% end
-% j(j==0)=[];              
-% time(time==0)=[];     
-% m=(time)';              
-% k=length(m);
+title('Filtered interbeat interval ECG signal'),xlim([0 N_ecg+200])
 
 %%Calling DFA
 n=100:100:1000;
@@ -67,21 +51,23 @@ for i=1:N
     subplot(223)
     plot(1:N1,y,"b"),grid on, xlim([0 N1+100]),hold on;
     plot(1:N1,y_n,"r"),grid on;
-    xlabel('n'),ylabel('f')
-    title('y(n) and Yn(n)'),legend('y','Yn','Location','northwest'),hold off;
+    xlabel('n'),ylabel('amplitude')
+    title('y(n) and Yn(n)'),legend('y','y_n','Location','northwest'),hold off
 end  
 n=n';
 subplot(224)
-plot(log(n),log(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);grid on;hold on;
+plot(log10(n),log10(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);grid on;hold on;
 title('DFA Interpretation')  
-xlabel('n')
-ylabel('F(n)')
+xlabel('log_1_0n')
+ylabel('log_1_0F(n)')
+
 for j=1:N-1
-slope(j)=(log(F_n(j+1))-log(F_n(j)))/(log(n(j+1))-log(n(j)));
+slope(j)=(log10(F_n(j+1))-log10(F_n(j)))/(log10(n(j+1))-log10(n(j)));
 end
-A=polyfit(log(n(1:end)),log(F_n(1:end)),1);
+A=polyfit(log10(n(1:end)),log10(F_n(1:end)),1);
 Alpha1=A(1); %slope of the 1st order polynomial aprox of the DFA graphic representation
-%A_c=polyval(A,log(n(1:end)));
+
+%A_c=polyval(A,log10(n(1:end)));
 %plot(log(n),A_c)
 D=3-A(1);
 return;
