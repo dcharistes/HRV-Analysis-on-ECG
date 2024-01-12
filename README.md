@@ -1,4 +1,5 @@
-desc.: 
+# Files description
+
 functions:
 DFA.m - Just the code of the DFA algorithm to analyze a signal (ECG signal). 
 DFA_call_p.m - The argument of the function loads a signal. This function pre-processes the signal and then analyzes it by calling the DFA function. 
