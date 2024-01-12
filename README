@@ -1,4 +1,4 @@
-# ECG Analysis with DFA - files info-desc
+# ECG Analysis with DFA-files desc.
 
 functions:
 DFA.m - Just the code of the DFA algorithm to analyze a signal (ECG signal). 
