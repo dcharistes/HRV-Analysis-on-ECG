@@ -1,3 +1,5 @@
+##ECG Analysis with DFA
+
 desc.: 
 Unmerged functions:
 DFA.m - Just the code of the DFA algorithm to analyze a signal (ECG signal). 
