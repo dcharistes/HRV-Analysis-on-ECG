@@ -8,7 +8,8 @@ f_pl=50;  %powerlines frequency
 N_ecg=length(ecg);
 t=0:N_ecg-1; %time period(total sample/Fs)
 subplot(221)
-plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '),grid on,xlim([0 N_ecg+200])        
+plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '), grid on
+xlim([0 N_ecg+200]), yl=ylim;     
 xlabel('Beat number')
 ylabel('amplitude')
 
@@ -26,7 +27,7 @@ t1=0:N1-1;
 
 subplot(222)
 plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('Beat number')
-title('Filtered interbeat interval ECG signal'),xlim([0 N_ecg+200])
+title('Filtered interbeat interval ECG signal'),xlim([0 N_ecg+200]), ylim(yl)
 
 %%Calling DFA
 n=100:100:1000;
