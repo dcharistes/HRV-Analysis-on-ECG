@@ -3,15 +3,17 @@ function DFA_final
 clc;
 DATA=load("O1.txt");
 disp("ECG Analysis of one signal")
-[d,a,slope,N]=DFA_call_F(DATA);
+[d,a,slope,N,A_up2cp,A_aftercp]=DFA_call_F(DATA);
 disp("dimension= "+d);disp("average slope of the whole graph is: "+a);
 for j=1:N-1 
-    disp("slope("+j+"): "+slope(j))
+    disp("slope("+j+"): "+slope(j,1))
 end
+disp("average slope up to critical point: "+A_up2cp(1))
+disp("average slope after critical point: "+A_aftercp(1))
 end
 
 %%%DFA_call_F 
-function [D,Alpha1,slope,N]=DFA_call_F(DATA)
+function [D,Alpha1,slope,N,A_up2cp,A_aftercp]=DFA_call_F(DATA)
 
 %%Pre-processing
 ecg=DATA;
@@ -24,7 +26,7 @@ plot(t,ecg,'r');title('Raw Interbeat interval ECG Signal '),grid on,xlim([0 N_ec
 xlabel('Beat number')
 ylabel('amplitude')
 
-w=f_pl/(f_s/2); %50Hz is the frequency of the powerlines we are trying to remove here
+w=f_pl/(f_s/2); %50Hz is the frequency of the powerlines we are trying to remove here, electrical interference in US, ζωνοφρακτικο φιλτρο
 bw=w;
 [num,den]=iirnotch(w,bw);
 ecg_notch=filter(num,den,ecg);
@@ -39,12 +41,13 @@ t1=0:N1-1;
 subplot(222)
 plot(t1,ecg_smooth),grid on,ylabel('amplitude'),xlabel('Beat number')
 title('Filtered interbeat interval ECG signal'),xlim([0 N_ecg+200])
+ylim([0.75 1.15])
 
 %%Calling DFA
 n=100:100:1000;
 N=length(n);
 F_n=zeros(N,1);
-slope=zeros(1,N-1);
+slope=zeros(N-1,2);
 for i=1:N
     [F_n(i),y,y_n,N1]=DFA(ecg_smooth,n(i),1);
 %Plots
@@ -56,19 +59,23 @@ for i=1:N
 end  
 n=n';
 subplot(224)
-plot(log10(n),log10(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);grid on;hold on;
+plot(log10(n),log10(F_n),'-o','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]),grid on;hold on;
 title('DFA Interpretation')  
 xlabel('log_1_0n')
 ylabel('log_1_0F(n)')
 
 for j=1:N-1
-slope(j)=(log10(F_n(j+1))-log10(F_n(j)))/(log10(n(j+1))-log10(n(j)));
+    slope(j,:)=polyfit(log10(n(j:j+1)),log10(F_n(j:j+1)),1);
 end
+
 A=polyfit(log10(n(1:end)),log10(F_n(1:end)),1);
 Alpha1=A(1); %slope of the 1st order polynomial aprox of the DFA graphic representation
 
-%A_c=polyval(A,log10(n(1:end)));
-%plot(log(n),A_c)
+cp=N-6; %critical point of motion change brownian-pink-white noise (based on observation)
+
+A_up2cp=polyfit(log10(n(1:cp)),log10(F_n(1:cp)),1); %calculating the slope up to that cp
+A_aftercp=polyfit(log10(n(cp:end)),log10(F_n(cp:end)),1); %calculating the slope after the cp
+
 D=3-A(1);
 return;
 
@@ -89,7 +96,6 @@ y_n=zeros(N1,1);
 fitcoef=zeros(n,order+1);
 
 mean1=mean(DATA(1:N1));
-
 
 for i=1:N1
     y(i)=sum(DATA(1:i)-mean1);
