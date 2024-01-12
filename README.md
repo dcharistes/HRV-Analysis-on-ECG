@@ -1,4 +1,4 @@
-##ECG Analysis with DFA
+#ECG Analysis with DFA
 
 desc.: 
 Unmerged functions:
