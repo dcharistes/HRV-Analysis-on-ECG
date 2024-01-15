@@ -17,8 +17,8 @@ w=f_pl/(f_s/2); %50Hz is the frequency of the powerlines we are trying to remove
 bw=w;
 [num,den]=iirnotch(w,bw);
 ecg_notch=filter(num,den,ecg);
-[e,f]=wavedec(ecg_notch,20,'db6');
-g=wrcoef('d',e,f,'db6',16);
+[e,f]=wavedec(ecg_notch,10,'db6');
+g=wrcoef('d',e,f,'db6',6);
 
 ecg_wave=ecg_notch-g; 
 ecg_smooth=smooth(ecg_wave); 
