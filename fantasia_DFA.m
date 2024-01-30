@@ -23,7 +23,7 @@ for k = 1:numel(fileList)
     disp("ECG No.: "+k)
     disp("dimension= "+d);
     disp("average slope of the whole graph is: "+a);
-    for j=1:N-1 
+    for j=1:N-1
     disp("slope("+j+"): "+slope(j,1))
     end
 end
