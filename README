@@ -1,7 +1,7 @@
 # ECG Analysis with DFA-files desc.
 
 functions:
-DFA.m - Just the code of the DFA algorithm to analyze a signal (ECG signal). 
+DFA.m - Just the code of the DFA algorithm part that is repeated for a given window size and computes the fluctuation value to analyze a signal (ECG signal). 
 DFA_call_p.m - The argument of the function loads a signal. This function pre-processes the signal and then analyzes it by calling the DFA function for different window sizes. 
 
 Run files:
