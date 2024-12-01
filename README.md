@@ -44,7 +44,7 @@ This project implements Detrended Fluctuation Analysis (DFA), a method for scali
 ## Outputs
 - **Filtered Signal**: Displays the denoised ECG signal.
 - **DFA Results**:
-  - Log-log plot showing fluctuation function ($F(n)$) vs. window size ( $n ).
+  - Log-log plot showing fluctuation function ($F(n)) vs. window size ( $n ).
   - Slope of the log-log plot ($alpha$) representing scaling properties.
   - Fractal dimension ( $D$ ) derived as ( $D$ = $3$ - $alpha$ ).
 
