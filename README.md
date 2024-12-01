@@ -56,11 +56,6 @@ This project implements Detrended Fluctuation Analysis (DFA), a method for scali
 4. **Log-Log Plot**:
    - Displays the relationship between \( F(n) \) and \( n \) with computed slopes.
 
-## Applications
-- Physiological signal analysis (e.g., ECG, EEG).
-- Studying fractal properties of time-series data.
-- Scaling analysis in fields like finance, biology, and physics.
-
 ## References
 - Peng, C.-K., et al. *"Quantification of scaling exponents and crossover phenomena in nonstationary heartbeat time series"*, Physical Review E, 1995.
 
