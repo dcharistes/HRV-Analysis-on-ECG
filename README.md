@@ -41,20 +41,6 @@ This project implements Detrended Fluctuation Analysis (DFA), a method for scali
   - Signal Processing Toolbox.
   - Wavelet Toolbox.
 
-## How to Use
-1. **Setup**:
-   - Ensure both `DFA.m` and `DFA_call_p.m` are in the same directory.
-   - Load your ECG data into MATLAB in a vector format.
-   
-2. **Run the Analysis**:
-   - Call the function `DFA_call_p(DATA)` with your ECG data.
-   
-   Example:
-   ```matlab
-   load ecg_data.mat; % Load your ECG data
-   DFA_call_p(ecg_data);
-   ```
-
 ## Outputs
 - **Filtered Signal**: Displays the denoised ECG signal.
 - **DFA Results**:
@@ -79,5 +65,4 @@ This project implements Detrended Fluctuation Analysis (DFA), a method for scali
 - Peng, C.-K., et al. *"Quantification of scaling exponents and crossover phenomena in nonstationary heartbeat time series"*, Physical Review E, 1995.
 
 ## Author
-[Your Name or Organization]  
-[Contact Information]
+[Dimitris Charistes, Dimitris Bismpas]  
